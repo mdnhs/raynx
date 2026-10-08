@@ -18,6 +18,7 @@ const fontMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://raynx.ie"),
   title: "Raynx — Software, SEO and digital marketing",
   description:
     "Raynx is a Dublin company building custom software and websites, and growing them with SEO and digital marketing. Our new website is launching soon.",

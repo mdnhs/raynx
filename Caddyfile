@@ -1,0 +1,19 @@
+# Caddy obtains and renews HTTPS certificates for these domains
+# automatically. DNS A/AAAA records for raynx.ie and www.raynx.ie must point
+# at this server, and ports 80 and 443 must be open.
+
+www.raynx.ie {
+	redir https://raynx.ie{uri} permanent
+}
+
+raynx.ie {
+	encode zstd gzip
+	reverse_proxy web:3000
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		-Server
+	}
+}

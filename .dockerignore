@@ -1,0 +1,16 @@
+.git
+.next
+node_modules
+npm-debug.log*
+pnpm-debug.log*
+.env*
+!.env.example
+.mcp.json
+.claude
+.vscode
+.idea
+.DS_Store
+Dockerfile
+docker-compose.yml
+Caddyfile
+README.md
