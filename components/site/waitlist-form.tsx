@@ -64,7 +64,7 @@ export function WaitlistForm({ className }: { className?: string }) {
           }}
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? `${id}-error` : undefined}
-          className="min-w-0 flex-1 bg-transparent px-4 text-sm text-white placeholder:text-mist/60 focus:outline-none"
+          className="w-full min-w-0 flex-1 bg-transparent px-4 text-sm text-white placeholder:text-mist/60 focus:outline-none"
         />
         <button
           type="submit"

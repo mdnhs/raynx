@@ -80,6 +80,8 @@ const INNER_GLOW = 0.7
 const BASE_FOV = 30
 // Canvas size relative to its layout box (see HeroScene markup).
 const OVERSCAN = 1.6
+// Container aspect ratio (w/h) the camera framing was tuned for.
+const FRAMED_ASPECT = 0.95
 
 // Fine vertical ridges, the fluted/ribbed glass striations on every face.
 function createStriationNormalMap() {
@@ -316,8 +318,21 @@ export function HeroScene({ className }: { className?: string }) {
         Math.atan(OVERSCAN * Math.tan(THREE.MathUtils.degToRad(BASE_FOV / 2)))
       )
     const camera = new THREE.PerspectiveCamera(fov, width / height, 0.1, 1000)
-    camera.position.set(15.5, 9, 19)
-    camera.lookAt(0.4, 0, 0)
+    // The framing is tuned for the desktop column's proportions. Narrower
+    // (portrait) containers see less horizontally at the same vertical fov,
+    // so pull the camera back along the same direction to keep the stack in.
+    const cameraHome = new THREE.Vector3(15.5, 9, 19)
+    const cameraTarget = new THREE.Vector3(0.4, 0, 0)
+    const fitCamera = (aspect: number) => {
+      const pullBack = Math.max(1, FRAMED_ASPECT / aspect)
+      camera.position
+        .copy(cameraHome)
+        .sub(cameraTarget)
+        .multiplyScalar(pullBack)
+        .add(cameraTarget)
+      camera.lookAt(cameraTarget)
+    }
+    fitCamera(camera.aspect)
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -693,6 +708,7 @@ export function HeroScene({ className }: { className?: string }) {
       const h = container.clientHeight
       if (w > 0 && h > 0) {
         camera.aspect = w / h
+        fitCamera(camera.aspect)
         camera.updateProjectionMatrix()
         renderer.setSize(w, h)
         if (!running) render()
